@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.33.0 (3ce457399)
+  labels:
+    io.kompose.service: orders-app
+  name: orders-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      io.kompose.service: orders-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.33.0 (3ce457399)
+      labels:
+        io.kompose.network/micro-default: "true"
+        io.kompose.service: orders-app
+    spec:
+      initContainers:
+      - name: init-orders
+        image: akreem/micro_orders_app:v1.0
+        command: ["bash", "-c"]
+        args:
+          - >
+            python manage.py makemigrations &&
+            python manage.py migrate
+
+      containers:
+      - name: orders-app
+        image: akreem/micro_orders_app:v1.0
+        command: ["bash", "-c"]
+        args: ["python ./manage.py runserver 0.0.0.0:8004"]
+        ports:
+        - containerPort: 8004
+          protocol: TCP
+      restartPolicy: Always
+

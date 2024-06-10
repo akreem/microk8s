@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.33.0 (3ce457399)
+  labels:
+    io.kompose.service: products-app
+  name: products-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: products-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.33.0 (3ce457399)
+      labels:
+        io.kompose.network/micro-default: "true"
+        io.kompose.service: products-app
+    spec:
+      initContainers:
+      - name: init-products-db
+        image: akreem/micro_products:v2.0
+        env:
+        - name: DJANGO_SUPERUSER_USERNAME
+          value: "admin"
+        - name: DJANGO_SUPERUSER_EMAIL
+          value: "admin@example.com"
+        - name: DJANGO_SUPERUSER_PASSWORD
+          value: "adminpass"
+        command: ["bash", "-c"]
+        args:
+          - >
+            python manage.py makemigrations &&
+            python manage.py migrate &&
+            python create_superuser.py
+
+      containers:
+      - name: products-app
+        image: akreem/micro_products:v2.0
+        command: ["bash", "-c"]
+        args: ["python ./manage.py runserver 0.0.0.0:8002"]
+        ports:
+        - containerPort: 8002
+          protocol: TCP
+      restartPolicy: Always
+

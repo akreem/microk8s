@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Your Orders</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <style>
+          body {
+            font-family: Arial, Helvetica, sans-serif;
+          }
+          .bg-pink {
+            background-color: pink;
+          }
+    
+          .cart-container {
+            width: 80%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .cart {
+            width: 100%;
+        }
+
+        .cart-header, .cart-item, .cart-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-header {
+            font-weight: bold;
+            background-color: #f8f8f8;
+        }
+
+        .cart-item {
+            background-color: #fff;
+        }
+
+        .cart-footer {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .product-image, .product-title, .product-price, .product-quantity, .product-total, .product-remove {
+            flex: 1;
+            text-align: center;
+        }
+
+        .product-image {
+            flex: 0.5;
+        }
+
+        .product-image img {
+            width: 50px;
+            height: auto;
+        }
+
+        .product-quantity input {
+            width: 50px;
+            text-align: center;
+        }
+
+        .button-20 {
+            appearance: button;
+            background-color: #cc0052;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #ffffff;
+            cursor: pointer;
+            display: inline-block;
+            font-family: din-round, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            line-height: 20px;
+            margin: 0;
+            outline: none;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter 0.2s;
+            user-select: none;
+            -webkit-user-select: none;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 100%;
+          }
+    
+          .button-20:after {
+            background-clip: padding-box;
+            background-color: #ff0066;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+          }
+    
+          .button-20:main,
+          .button-20:focus {
+            user-select: auto;
+          }
+    
+          .button-20:hover:not(:disabled) {
+            filter: brightness(1.1);
+            -webkit-filter: brightness(1.1);
+          }
+    
+          .button-20:disabled {
+            cursor: auto;
+          }
+    
+          .button-20:active {
+            border-width: 4px 0 0;
+            background: none;
+          }
+
+        .button-19 {
+            appearance: button;
+            background-color: #1899d6;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #ffffff;
+            cursor: pointer;
+            display: inline-block;
+            font-family: din-round, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            line-height: 20px;
+            margin: 0;
+            outline: none;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter 0.2s;
+            user-select: none;
+            -webkit-user-select: none;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 100%;
+          }
+    
+          .button-19:after {
+            background-clip: padding-box;
+            background-color: #1cb0f6;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+          }
+    
+          .button-19:main,
+          .button-19:focus {
+            user-select: auto;
+          }
+    
+          .button-19:hover:not(:disabled) {
+            filter: brightness(1.1);
+            -webkit-filter: brightness(1.1);
+          }
+    
+          .button-19:disabled {
+            cursor: auto;
+          }
+    
+          .button-19:active {
+            border-width: 4px 0 0;
+            background: none;
+          }
+
+
+          .button-21 {
+            appearance: button;
+            background-color: #229600;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #ffffff;
+            cursor: pointer;
+            display: inline-block;
+            font-family: din-round, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            line-height: 20px;
+            margin: 0;
+            outline: none;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter 0.2s;
+            user-select: none;
+            -webkit-user-select: none;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: 100%;
+          }
+    
+          .button-21:after {
+            background-clip: padding-box;
+            background-color: #34c10c;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+          }
+    
+          .button-21:main,
+          .button-21:focus {
+            user-select: auto;
+          }
+    
+          .button-21:hover:not(:disabled) {
+            filter: brightness(1.1);
+            -webkit-filter: brightness(1.1);
+          }
+    
+          .button-21:disabled {
+            cursor: auto;
+          }
+    
+          .button-21:active {
+            border-width: 4px 0 0;
+            background: none;
+          }
+            .order {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            .order-header {
+                font-weight: bold;
+            }
+            .product {
+                margin-left: 20px;
+                margin-top: 10px;
+            }
+            .product img {
+                max-width: 100px;
+                display: block;
+            }
+
+        </style>
+        <script>
+          const AUTH_SERVICE_URL = "{{ auth_service }}";
+          const PRODUCTS_SERVICE_URL = "{{ products_service }}";
+          const CART_SERVICE_URL = "{{ cart_service }}";
+          const ORDERS_SERVICE_URL = "{{ orders_service }}";
+        </script>
+
+        
+        
+    </head>
+    
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+              <a class="navbar-brand" href="/"><img src="{% static 'assets/file1.png' %}" alt="My Shop" style="height: 90px;"></a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link " aria-current="page" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="/orders">Orders</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="d-flex">
+                      <button class="btn btn-outline-dark" type="submit" id="cartbtn" onclick="location.href='/cart/'">
+                        <i class="bi-cart-fill me-1"></i>
+                        Cart
+                        <span class="badge bg-dark text-white ms-1 rounded-pill" id="total-items"></span>
+                      </button>
+                        &nbsp; 
+                      </div>
+                      <div class="d-flex" id="logout" >
+                        <button class="btn btn-outline-dark" id="logoutBtn">
+                          <i class="bi-person-fill me-1"></i>Logout
+                        </button>
+                      </div>
+                      <div id="response"></div> 
+
+                      
+                      <!-- Add an element to display login status -->
+                        <div id="login-status" class="mb-3"></div>
+
+                     
+
+{% comment %}                     <form class="d-flex">
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button>
+                    </form> {% endcomment %}
+                </div>
+            </div>
+        </nav>
+        <!-- Product section-->
+        <section class="py-5">
+            <h1>Your orders </h1>
+            <div class="container px-4 px-lg-5 my-5" id="product-container">
+                <div class="cart">
+            <div id="order-list"></div>
+                </div></div>
+
+        </section>
+
+
+
+
+    
+    <!--new script-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+    <script>
+      $(function () {
+        // Function to get the JWT token from localStorage
+        async function getToken() {
+          const  token = localStorage.getItem("accessToken");
+          if (!token) {
+            console.error('Token not found in localStorage');
+            return null;
+          }
+
+          const  isBlacklisted = await checkTokenBlacklist(token);
+            if (isBlacklisted) {
+              console.warn('Token is blacklisted');
+              return null;
+            }
+            else {
+              return token;
+            }
+        }
+
+
+
+        // Function to get the username from the JWT token
+        function getUserIDFromToken(token) {
+          if (!token) {
+            console.error('Invalid token: token is null or undefined');
+            return null;
+          }
+          try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            console.log("JWT Payload:", payload);
+            return payload.user_id;
+          } catch (e) {
+            console.error("Invalid token:", e);
+            return null;
+          }
+        }
+
+        // Function to check if the token is blacklisted
+        async function checkTokenBlacklist(token) {
+          try {
+              const response = await $.ajax({
+                  url: `${AUTH_SERVICE_URL}/token/blacklist-check/`,
+                  type: "POST",
+                  contentType: "application/json",
+                  data: JSON.stringify({ token })
+              });
+              return response.detail === 'Token is blacklisted';
+          } catch (error) {
+              console.error('Error checking token blacklist:', error);
+              return true; // Assume blacklisted if there's an error
+          }
+        }
+        
+        // Function to fetch user details using user_id
+        async function fetchUserDetails(user_id) {
+          try {
+              const token = await getToken();
+              const response = await $.ajax({
+                  url: `${AUTH_SERVICE_URL}/auth/user/${user_id}/`,
+                  type: "GET",
+                  headers: {
+                      Authorization: `Bearer ${token}`,
+                  },
+              });
+              return response;
+          } catch (error) {
+              console.error('Error fetching user details:', error);
+              return null;
+          }
+        }
+
+        // Display login status
+        async function displayLoginStatus() {
+          const token = await getToken();
+          if (!token) {
+            console.error('there is no token:');
+            window.location.replace("/");
+            return;
+          }
+          
+
+          const user_id = getUserIDFromToken(token);
+          if (!user_id) {
+            console.error('User ID could not be extracted from token');
+            return;
+          }
+          try {
+            const user = await fetchUserDetails(user_id);
+            if (user) {
+                $("#login-status").html(
+                    `<br>&nbsp; <span>Welcome, ${user.username}</span>`
+                );
+                $("#cartbtn").show();
+            }
+          } catch (error) {
+              console.error('Error fetching user details:', error);
+          }
+        }
+
+        async function fetchCart() {
+          const token = await getToken();
+          if (!token) {
+            console.error('there is no token:');
+            window.location.replace("/");
+            return;
+          }
+          const userId = getUserIDFromToken(token);
+    
+    
+          try {
+            if (userId) {
+              const response = await fetch(`${CART_SERVICE_URL}/cart/${userId}/`, {
+                headers: {
+                  'Authorization': `Token ${token}`,
+                  'Content-Type': 'application/json'
+                }
+              });
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              const cartItems = await response.json();
+              displayTotalItems(cartItems);
+            }
+          } catch (error) {
+            console.error('Failed to fetch cart:', error);
+          }
+        }
+    
+      function displayTotalItems(cartItems) {
+        // Calculate the total number of items in the cart
+        const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    
+        // Display the total number of items
+        const totalItemsElement = document.getElementById('total-items');
+        totalItemsElement.textContent = `${totalItems}`;
+      }
+
+        async function fetchOrders() {
+          const token = await getToken();
+          const userId = getUserIDFromToken(token);
+          if (userId) {
+            try {
+                const response = await fetch(`${ORDERS_SERVICE_URL}/api/orders/filter_by_username/?user_id=${userId}`);
+                
+                if (response.ok) {
+                  const orders = await response.json();
+                  displayOrders(orders);
+                } else {
+                    console.error('Failed to fetch orders');
+                }
+            } catch (error) {
+                console.error('Failed to fetch orders:', error);
+              }
+            }
+        }
+
+        function displayOrders(orders) {
+          const orderList = document.getElementById('order-list');
+  
+          orders.forEach(order => {
+              const orderDiv = document.createElement('div');
+              orderDiv.className = 'order';
+  
+              const orderHeader = document.createElement('div');
+              orderHeader.className = 'order-header';
+              orderHeader.innerText = `Order ID: ${order.id} | Total cost: ${order.order_cost} DT | Date: ${new Date(order.created_at).toLocaleString()}`;
+              orderDiv.appendChild(orderHeader);
+  
+              order.items.forEach(item => {
+                  const productDiv = document.createElement('div');
+                  productDiv.className = 'product';
+  
+                  const productImage = document.createElement('img');
+                  productImage.src = `${PRODUCTS_SERVICE_URL}/${item.product.thumbnail}`;
+                  productImage.alt = item.product.name;
+                  productDiv.appendChild(productImage);
+  
+                  const productInfo = document.createElement('div');
+                  productInfo.innerHTML = `
+                      <div><strong>${item.product.name}</strong></div>
+                      <div>Price: ${item.product.price.toFixed(2)} DT</div>
+                      <div>Quantity: ${item.quantity}</div>
+                      <div>Total: ${(item.product.price * item.quantity).toFixed(2)} DT</div>
+                  `;
+                  productDiv.appendChild(productInfo);
+  
+                  orderDiv.appendChild(productDiv);
+              });
+  
+              orderList.appendChild(orderDiv);
+          });
+      }
+      displayLoginStatus();
+      fetchOrders();
+      fetchCart();
+      });
+      document.addEventListener('DOMContentLoaded', function() {
+        const accessToken = localStorage.getItem('accessToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+    
+        if (!accessToken) {
+          console.error('Access token not found:');
+          return;
+        }
+    
+        function logoutUser() {
+          fetch(`${AUTH_SERVICE_URL}/auth/logout/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + accessToken
+            },
+            body: JSON.stringify({ access: accessToken })
+          })
+          .then(response => {
+            if (response.status === 205) {
+              console.error("blacklisted the access:", accessToken);
+              window.location.replace("/");
+            } else {
+              return response.json().then(data => {
+                throw new Error(JSON.stringify(data));
+              });
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            document.getElementById('response').innerText = 'Error: ' + (error.message || error);
+          });
+        }
+    
+        // Add event listener for the logout button
+        document.getElementById('logoutBtn').addEventListener('click', function(event) {
+          event.preventDefault();
+    
+          if (!accessToken) {
+            document.getElementById('response').innerText = 'AccessToken not found';
+            return;
+          }
+    
+          logoutUser();
+        });
+      });
+    </script>
+
+
+
+
+
+
+        <!-- Footer-->
+        <footer class="py-5 bg-pink">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; My Shop ❤ 2024</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{% static 'js/scripts.js' %}"></script>
+    </body>
+</html>

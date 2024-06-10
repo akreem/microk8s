@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.33.0 (3ce457399)
+  labels:
+    io.kompose.service: cart-app
+  name: cart-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: cart-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.33.0 (3ce457399)
+      labels:
+        io.kompose.network/micro-default: "true"
+        io.kompose.service: cart-app
+    spec:
+      initContainers:
+      - name: init-cart
+        image: akreem/micro_cart_app:v1.0
+        command: ["bash", "-c"]
+        args:
+          - >
+            python manage.py makemigrations &&
+            python manage.py migrate
+      containers:
+      - name: cart-app
+        image: akreem/micro_cart_app:v1.0
+        command: ["bash", "-c"]
+        args: ["python ./manage.py runserver 0.0.0.0:8003"]
+        ports:
+        - containerPort: 8003
+          protocol: TCP
+      restartPolicy: Always
+
